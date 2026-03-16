@@ -4,38 +4,36 @@
 
 [OpenClaw](https://github.com/openclaw/openclaw) has 60,000+ stars and proved that open-source AI agents can rival proprietary ones. But it runs on Claude, GPT, and DeepSeek — Western models that treat Indian languages as an afterthought.
 
-IndusClaw is the fork that puts Indian language models first.
+India now has production-grade LLMs. Someone needs to fork OpenClaw and build on top of those. That's what IndusClaw is for.
 
 > **[Star this repo](https://github.com/makash/indus-claw)** if you think Indian LLMs deserve a real agent platform
 
-> **[Get early access](https://indusclaw.in#early-access)** — drop your email and hear from us before anyone else
+> **[Help build this](https://indusclaw.in#early-access)** — leave your email, we'll reach out when it's time to ship
 
 > **[Help translate](https://github.com/makash/indus-claw/issues)** — 6 languages still need native speakers
 
 ---
 
-## The Thesis
+## Why This Needs to Exist
 
-India has production-grade LLMs. Sarvam-105B covers 22 languages with 128K context. Krutrim-2 does fast inference at 12B parameters. Hanooman generates video. AI4Bharat's IndicTrans2 translates across every scheduled language.
+Sarvam-105B has 128K context across 22 languages. Krutrim-2 does fast inference at 12B parameters. Hanooman generates video. AI4Bharat's IndicTrans2 translates across every scheduled language.
 
-What's missing? An AI agent platform that treats these models as first-class citizens — not a fallback option buried in a config file.
+The models are here. What's missing is an AI agent platform that treats them as first-class citizens — not a fallback option buried in a config file.
 
-That's IndusClaw.
-
-## What You Get
+## What We Want to Build
 
 A fork of OpenClaw where:
 
-- **Your default model is Indian** — Sarvam, Krutrim, or Hanooman out of the box, not something you swap in after setup
+- **Indian LLMs are the default** — Sarvam, Krutrim, or Hanooman out of the box, not something you swap in after setup
 - **All 22 scheduled languages work natively** — your agent understands Hindi, Tamil, Telugu, Bengali, and 18 more without bolting on a translation layer
-- **Voice comes first** — critical when hundreds of millions of your users speak before they type
+- **Voice comes first** — critical when hundreds of millions of users speak before they type
 - **WhatsApp is the primary channel** — because that's where India actually communicates
-- **Your data stays sovereign** — self-host on Indian infrastructure, nothing leaves unless you decide it should
+- **Data stays sovereign** — self-hostable on Indian infrastructure, nothing leaves unless you decide it should
 - **You pick the model** — start with Indian LLMs, plug in OpenAI or Anthropic when you need them
 
 OpenClaw's architecture is already model-agnostic. Its Gateway routes to any LLM via a config file. IndusClaw doesn't rebuild that — it tunes everything around it to work best with Indian models, Indian languages, and Indian users.
 
-## Indian LLMs on the Roster
+## Indian LLMs We Want to Power This
 
 | Model | Who | Parameters | Languages | Why It Matters |
 |---|---|---|---|---|
@@ -46,24 +44,26 @@ OpenClaw's architecture is already model-agnostic. Its Gateway routes to any LLM
 | **Airavata** | AI4Bharat / IIT Madras | Various | 22 Indian | IndicTrans2 translation. IndicNLP datasets. The ecosystem foundation. |
 | **BharatGen** | CDAC + IndiaAI | Various | 22 Indian | Government supercomputing initiative. Param 2 hardware. |
 
-No model is locked in yet. IndusClaw stays model-agnostic — you choose what runs under the hood.
+No model is locked in yet. The community decides what runs under the hood.
 
 ## Where Things Stand
 
-**Early days.** There's a [landing page](https://indusclaw.in), architecture decisions, and this README. The fork hasn't started yet.
+**This is day zero.** No fork exists yet. No agent code has been written. What exists is a thesis, a website, and open GitHub issues.
 
-What exists today:
-- `website/` — Landing page at [indusclaw.in](https://indusclaw.in) (Astro 6, Cloudflare Workers, D1)
+What's here today:
+- `website/` — Landing page at [indusclaw.in](https://indusclaw.in)
 - `docs/adr/` — Architecture Decision Records covering identity, design, tech stack, i18n, and LLM selection
 - This README
 
-What comes next:
+What needs to happen:
 1. Fork OpenClaw
-2. Swap the default model provider to Sarvam-105B
+2. Swap the default model provider to an Indian LLM
 3. Add Indian language support to the agent runtime
 4. Build WhatsApp and Telegram integrations tuned for Indian usage patterns
-5. Voice-first interaction layer using Sarvam's STT/TTS
+5. Voice-first interaction layer using Indian STT/TTS
 6. Community contributions for all 22 language translations
+
+We need developers, translators, and people who know Indian LLMs to make this real.
 
 ## Help Translate
 
@@ -80,10 +80,8 @@ If you speak one of these languages, your translation helps bring AI agents to m
 
 ## Get Involved
 
-This is an open-source project and your contributions make it real.
-
 - **Star this repo** — it tells other developers something is happening here
-- **[Sign up for early access](https://indusclaw.in#early-access)** — one email when the fork drops
+- **[Leave your email](https://indusclaw.in#early-access)** — we'll reach out when it's time to build
 - **[Translate the website](https://github.com/makash/indus-claw/issues)** — 6 languages need you
 - **Fork, branch, PR** — check the open issues and jump in
 - **Share this** — if you know someone building with Indian LLMs, send them here
