@@ -31,3 +31,4 @@ worker-configuration.d.ts
 .claude-flow/
 .swarm/
 .mcp.json
+.claude/

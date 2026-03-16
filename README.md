@@ -1,175 +1,85 @@
-# IndusClaw — Open-Source AI Agents, Made in India
+# IndusClaw
 
-[![License: MIT](https://img.shields.io/badge/License-MIT-C2452D.svg)](LICENSE)
-[![Astro 6](https://img.shields.io/badge/Astro-6.0-1F3A6E.svg)](https://astro.build)
-[![Cloudflare Workers](https://img.shields.io/badge/Cloudflare-Workers-F38020.svg)](https://workers.cloudflare.com)
+**An OpenClaw fork powered entirely by Indian LLMs.**
 
-**IndusClaw** is an India-centric fork of [OpenClaw](https://github.com/openclaw/openclaw), the open-source personal AI agent framework. We are building a platform that puts Indian language models and Indian developer needs first.
+[OpenClaw](https://github.com/openclaw/openclaw) proved that open-source AI agents can rival proprietary ones. But it runs on Western models — Claude, GPT, DeepSeek. IndusClaw asks a different question: *what if India's own large language models were good enough to power an entire AI agent platform?*
 
-> India's open-source AI agent platform — built with Indian LLMs, supporting all 22 scheduled Indian languages, and optimized for Indian developers and enterprises.
+We think they are. And we're going to prove it.
 
-## Why IndusClaw?
+## The Thesis
 
-India has 1.4 billion people speaking 22 officially recognized languages across 13 distinct scripts. Existing AI agent platforms default to English-first, Western LLM providers, and US-centric messaging integrations. IndusClaw changes that.
+India now has world-class LLMs. Sarvam-105B covers 22 languages with 128K context. Krutrim-2 does fast inference at 12B parameters. Hanooman generates video. AI4Bharat's IndicTrans2 translates across every scheduled language. These aren't toys — they're production-grade models built by IITs, government labs, and well-funded startups.
 
-- **Indian LLM-first** — designed to work natively with models like Sarvam-105B, Krutrim-2, Hanooman, and AI4Bharat
-- **22 scheduled Indian languages** supported out of the box — Hindi, Tamil, Telugu, Bengali, Kannada, Malayalam, Marathi, Gujarati, Punjabi, Odia, and more
-- **Model-agnostic architecture** — plug in any LLM provider (Sarvam AI, Ola Krutrim, OpenAI, Anthropic, or self-hosted)
-- **Voice-first interactions** — critical for India's diverse literacy levels, powered by Sarvam's multilingual speech-to-text and text-to-speech
-- **WhatsApp and Telegram native** — India's dominant messaging platforms, plus JioChat, Signal, and 50+ integrations via OpenClaw
-- **Self-hosted and privacy-respecting** — your data stays on your infrastructure, fully open-source under MIT license
-- **Cloudflare edge-deployed** — low-latency serving across India via Cloudflare's network
+What India doesn't have is an AI agent platform that treats these models as first-class citizens. That's IndusClaw.
 
-## Indian LLMs We're Exploring
+## What We're Building
 
-IndusClaw is model-agnostic. Here are the Indian-origin large language models on our radar:
+A fork of OpenClaw where:
 
-| Model | Organization | Parameters | Languages | Notes |
-|-------|-------------|------------|-----------|-------|
-| **Sarvam-105B** | Sarvam AI | 105B MoE | 22 Indian + English | Government-backed (IndiaAI Mission), open-source, 128K context |
-| **Sarvam-30B** | Sarvam AI | 30B MoE | 10+ Indian | Lighter model, 32K context, edge-friendly |
-| **Krutrim-2** | Ola AI | 12B dense | 22 Indian | Fast inference, 128K context, Mistral-NeMo architecture |
-| **Hanooman** | IIT Bombay + Reliance Jio | 1.5B–40B | 11 Indian | Multimodal: text, speech, and video generation |
-| **Airavata** | AI4Bharat / IIT Madras | Various | 22 Indian | NLP tooling, IndicTrans2 machine translation |
-| **BharatGen** | CDAC + IndiaAI | Various | 22 Indian | Government supercomputing initiative |
+- The **default model** is an Indian LLM, not a fallback option buried in config
+- **All 22 scheduled Indian languages** work natively — not as an afterthought bolted onto an English-first system
+- **Voice-first interaction** is core, not optional — critical for a country where hundreds of millions use voice before text
+- **WhatsApp is the primary channel** — because that's where India communicates
+- The entire stack can run **on Indian infrastructure**, self-hosted, data-sovereign
 
-> Early days — no model selection finalized. IndusClaw will support any LLM provider.
+OpenClaw's architecture is model-agnostic by design. Its Gateway routes to any LLM via a config file. We're not rebuilding that — we're tuning everything around it to work best with Indian models, Indian languages, and Indian users.
 
-## Tech Stack
+## Indian LLMs on Our Radar
 
-- **[Astro 6](https://astro.build)** — static-first framework with server-side rendering
-- **[Cloudflare Workers](https://workers.cloudflare.com)** — edge-deployed globally with low latency across India
-- **[Cloudflare D1](https://developers.cloudflare.com/d1/)** — SQLite database at the edge
-- **[Cloudflare Pages](https://pages.cloudflare.com)** — static asset hosting with automatic CDN
-- **Built-in i18n** — Astro 6 internationalization for 11 Indian languages
-- **Indic fonts** — Self-hosted Noto Sans fonts for Devanagari, Tamil, Telugu, Bengali, Kannada, Malayalam, Gujarati, Gurmukhi, and Oriya scripts via Astro's Fonts API
+| Model | Who | Parameters | Languages | Why It Matters |
+|-------|-----|-----------|-----------|----------------|
+| **Sarvam-105B** | Sarvam AI | 105B MoE | 22 Indian + EN | Government-backed under IndiaAI Mission. Open-source. 128K context. The strongest Indian LLM today. |
+| **Sarvam-30B** | Sarvam AI | 30B MoE | 10+ Indian | Lighter. 32K context. Runs at the edge. |
+| **Krutrim-2** | Ola AI | 12B dense | 22 Indian | Fast. 128K context. Built on Mistral-NeMo. |
+| **Hanooman** | IIT Bombay + Jio | 1.5B–40B | 11 Indian | Multimodal — generates text, speech, and video. |
+| **Airavata** | AI4Bharat / IIT Madras | Various | 22 Indian | IndicTrans2 translation. IndicNLP datasets. The ecosystem foundation. |
+| **BharatGen** | CDAC + IndiaAI | Various | 22 Indian | Government supercomputing initiative. Param 2 hardware. |
 
-## Getting Started
+No model is selected yet. IndusClaw will remain model-agnostic — but Indian models come first.
 
-### Prerequisites
+## Status
 
-- Node.js 22.12.0 or later
-- npm 10+
+**Early days.** We have a [landing page](https://indusclaw.in) and a vision. The fork hasn't started yet.
 
-### Development
+What exists today:
+- `website/` — Landing page at [indusclaw.in](https://indusclaw.in) (Astro 6, Cloudflare Workers, D1)
+- `docs/adr/` — Architecture Decision Records for identity, design, tech stack, i18n, and LLM selection
+- This README
 
-```bash
-# Install dependencies
-npm install
+What comes next:
+- Fork OpenClaw
+- Swap the default model provider to Sarvam-105B
+- Add Indian language support to the agent runtime
+- Build WhatsApp and Telegram integrations tuned for Indian usage patterns
+- Voice-first interaction layer using Sarvam's STT/TTS
+- Community contributions for all 22 language translations
 
-# Start dev server
-npm run dev
+## Help Translate
 
-# Build for production
-npm run build
+The website supports 11 Indian languages. Five have full translations. Six need native speakers:
 
-# Preview production build
-npm run preview
-```
-
-### Cloudflare Deployment
-
-```bash
-# Create D1 database
-wrangler d1 create indusclaw-db
-
-# Update wrangler.jsonc with the database_id from above
-
-# Run schema migration
-wrangler d1 execute indusclaw-db --file=./db/schema.sql
-
-# Deploy to Cloudflare
-npm run build && wrangler deploy
-```
-
-## Project Structure
-
-```
-indus-claw/
-├── astro.config.mjs           # Astro 6 + Cloudflare + i18n + Indic fonts
-├── wrangler.jsonc             # Cloudflare Workers config with D1 binding
-├── db/schema.sql              # D1 database schema
-├── docs/adr/                  # Architecture Decision Records
-│   ├── 001-project-identity.md
-│   ├── 002-design-system.md
-│   ├── 003-tech-stack.md
-│   ├── 004-i18n-strategy.md
-│   └── 005-indian-llms.md
-├── src/
-│   ├── components/            # Astro components
-│   │   ├── LLMTable.astro     # Indian LLM comparison table
-│   │   └── SignupForm.astro   # Email signup with D1 backend
-│   ├── i18n/                  # Internationalization
-│   │   ├── translations.ts   # Translations for en, hi, ta, te, bn
-│   │   └── utils.ts          # i18n helpers
-│   ├── layouts/Layout.astro   # Base layout with Harappan design system
-│   └── pages/
-│       ├── index.astro        # English landing page
-│       ├── api/signup.ts      # Cloudflare Worker API → D1
-│       ├── hi/index.astro     # Hindi (हिन्दी)
-│       ├── ta/index.astro     # Tamil (தமிழ்)
-│       ├── te/index.astro     # Telugu (తెలుగు)
-│       └── bn/index.astro     # Bengali (বাংলা)
-└── public/                    # Static assets
-```
-
-## Design System
-
-IndusClaw uses a design system inspired by the **Indus Valley / Harappan civilization** — one of the world's earliest urban civilizations, known for its precision engineering, grid-city planning, and standardized systems.
-
-| Token | Color | Hex | Inspiration |
-|-------|-------|-----|-------------|
-| Background | Indus Cream | `#F5E6CC` | Limestone plaster, unfired clay |
-| Text | Deep Charcoal | `#2C2C2C` | Fired seal surfaces |
-| Accent | Terracotta Red | `#C2452D` | Baked brick, pottery |
-| Secondary | Lapis Blue | `#1F3A6E` | Lapis lazuli from Badakhshan |
-| Muted | Steatite Grey | `#708090` | Soapstone seal carvings |
-
-Visual motifs include the Harappan grid-city plan (background pattern), seal frames (logo container), and stepped battlements (section dividers).
-
-## Supported Languages
-
-| Language | Code | Script | Status |
-|----------|------|--------|--------|
-| English | `en` | Latin | Full |
-| Hindi | `hi` | Devanagari | Full |
-| Tamil | `ta` | Tamil | Full |
-| Telugu | `te` | Telugu | Full |
-| Bengali | `bn` | Bengali | Full |
-| Kannada | `kn` | Kannada | Fallback to English |
-| Malayalam | `ml` | Malayalam | Fallback to English |
-| Marathi | `mr` | Devanagari | Fallback to English |
-| Gujarati | `gu` | Gujarati | Fallback to English |
-| Punjabi | `pa` | Gurmukhi | Fallback to English |
-| Odia | `or` | Oriya | Fallback to English |
-
-Translations are community-driven. Contributions welcome for all 22 scheduled Indian languages.
+- [Kannada (ಕನ್ನಡ)](https://github.com/makash/indus-claw/issues/1)
+- [Malayalam (മലയാളം)](https://github.com/makash/indus-claw/issues/2)
+- [Marathi (मराठी)](https://github.com/makash/indus-claw/issues/3)
+- [Gujarati (ગુજરાતી)](https://github.com/makash/indus-claw/issues/4)
+- [Punjabi (ਪੰਜਾਬੀ)](https://github.com/makash/indus-claw/issues/5)
+- [Odia (ଓଡ଼ିଆ)](https://github.com/makash/indus-claw/issues/6)
 
 ## Contributing
 
-We welcome contributions from Indian developers and the global open-source community.
+We welcome contributions. Fork, branch, PR. See the open issues.
 
-1. Fork the repo
-2. Create a feature branch (`git checkout -b feature/my-feature`)
-3. Commit your changes
-4. Push to the branch
-5. Open a pull request
+## Related
 
-Translation contributions are especially valued — help us reach all 22 scheduled Indian languages.
-
-## Related Projects
-
-- [OpenClaw](https://github.com/openclaw/openclaw) — The open-source AI agent framework IndusClaw is forked from
-- [Sarvam AI](https://www.sarvam.ai/) — India's sovereign AI lab, building open-source Indian LLMs
-- [AI4Bharat](https://ai4bharat.iitm.ac.in/) — IIT Madras initiative for Indian language AI
-- [IndicTrans2](https://github.com/AI4Bharat/IndicTrans2) — Machine translation for all 22 scheduled Indian languages
+- [OpenClaw](https://github.com/openclaw/openclaw) — The upstream project we're forking
+- [Sarvam AI](https://www.sarvam.ai/) — India's sovereign AI lab
+- [AI4Bharat](https://ai4bharat.iitm.ac.in/) — IIT Madras Indian language AI initiative
+- [IndicTrans2](https://github.com/AI4Bharat/IndicTrans2) — Machine translation for 22 Indian languages
 
 ## License
 
-MIT License. See [LICENSE](LICENSE) for details.
+MIT. See [LICENSE](LICENSE).
 
 ---
 
-**IndusClaw** — Open-Source AI Agents, Made in India. Built for Bharat.
-
-[Website](https://indusclaw.in) · [GitHub](https://github.com/makash/indus-claw)
+[indusclaw.in](https://indusclaw.in) · Built for Bharat.
