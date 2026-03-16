@@ -50,6 +50,8 @@ type TranslationSet = {
 };
 
 // Languages with full translations
+export const translatedLocales = new Set(['en', 'hi', 'ta', 'te', 'bn']);
+
 export const translations: Partial<Record<Lang, TranslationSet>> & { en: TranslationSet } = {
   en: {
     nav: {

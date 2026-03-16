@@ -1,7 +1,7 @@
 ---
 import { Font } from 'astro:assets';
 import { getRelativeLocaleUrl } from 'astro:i18n';
-import { languages, type Lang } from '../i18n/translations';
+import { languages, translatedLocales, type Lang } from '../i18n/translations';
 import { getLangFromUrl, useTranslations } from '../i18n/utils';
 
 interface Props {
@@ -11,6 +11,9 @@ interface Props {
 
 const lang = getLangFromUrl(Astro.url) as Lang;
 const t = useTranslations(lang);
+const hasTranslation = translatedLocales.has(lang);
+// For untranslated locales, render as 'en' to avoid Indic fonts on English text
+const effectiveLang = hasTranslation ? lang : 'en';
 const { title = `IndusClaw — ${t.hero.titleHighlight}`, description = t.hero.description } = Astro.props;
 
 const fontVarMap: Partial<Record<Lang, string>> = {
@@ -28,7 +31,7 @@ const fontVarMap: Partial<Record<Lang, string>> = {
 ---
 
 <!doctype html>
-<html lang={lang}>
+<html lang={effectiveLang}>
   <head>
     <meta charset="utf-8" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
@@ -44,7 +47,7 @@ const fontVarMap: Partial<Record<Lang, string>> = {
     <Font cssVariable="--font-display" preload />
     <Font cssVariable="--font-sans" preload />
     <Font cssVariable="--font-mono" preload />
-    {lang !== 'en' && fontVarMap[lang] && <Font cssVariable={fontVarMap[lang]!} preload />}
+    {hasTranslation && lang !== 'en' && fontVarMap[lang] && <Font cssVariable={fontVarMap[lang]!} preload />}
   </head>
   <body>
     <!-- Film grain overlay -->
