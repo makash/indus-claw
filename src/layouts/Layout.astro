@@ -4,6 +4,15 @@ import { getRelativeLocaleUrl } from 'astro:i18n';
 import { languages, translatedLocales, type Lang } from '../i18n/translations';
 import { getLangFromUrl, useTranslations } from '../i18n/utils';
 
+const issueMap: Partial<Record<Lang, string>> = {
+  kn: 'https://github.com/makash/indus-claw/issues/1',
+  ml: 'https://github.com/makash/indus-claw/issues/2',
+  mr: 'https://github.com/makash/indus-claw/issues/3',
+  gu: 'https://github.com/makash/indus-claw/issues/4',
+  pa: 'https://github.com/makash/indus-claw/issues/5',
+  or: 'https://github.com/makash/indus-claw/issues/6',
+};
+
 interface Props {
   title?: string;
   description?: string;
@@ -73,14 +82,29 @@ const fontVarMap: Partial<Record<Lang, string>> = {
               <svg viewBox="0 0 12 12" width="10" height="10" class="lang-chevron"><path d="M3 5l3 3 3-3" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
             </button>
             <div class="lang-dropdown" id="lang-dropdown">
-              {Object.entries(languages).map(([code, name]) => (
-                <a
-                  href={getRelativeLocaleUrl(code, '/')}
-                  class:list={['lang-link', { active: code === lang }]}
-                >
-                  {name}
-                </a>
-              ))}
+              {Object.entries(languages).map(([code, name]) => {
+                const isTranslated = translatedLocales.has(code);
+                const issue = issueMap[code as Lang];
+                return isTranslated ? (
+                  <a
+                    href={getRelativeLocaleUrl(code, '/')}
+                    class:list={['lang-link', { active: code === lang }]}
+                  >
+                    {name}
+                  </a>
+                ) : (
+                  <a
+                    href={issue || '#'}
+                    target={issue ? '_blank' : undefined}
+                    rel={issue ? 'noopener' : undefined}
+                    class="lang-link lang-link--pending"
+                    title={`${name} — translation not ready yet. Help translate!`}
+                  >
+                    {name}
+                    <span class="lang-wip">help translate</span>
+                  </a>
+                );
+              })}
             </div>
           </div>
         </div>
@@ -340,6 +364,23 @@ const fontVarMap: Partial<Record<Lang, string>> = {
   }
   .lang-link:hover { background: var(--color-bg-warm); color: var(--color-text); }
   .lang-link.active { color: var(--color-accent); background: var(--color-accent-glow); }
+
+  .lang-link--pending {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 0.5rem;
+    opacity: 0.5;
+  }
+  .lang-link--pending:hover { opacity: 0.8; }
+
+  .lang-wip {
+    font-size: 0.6rem;
+    font-family: var(--font-mono), monospace;
+    color: var(--color-gold);
+    letter-spacing: 0.04em;
+    white-space: nowrap;
+  }
 
   /* Footer */
   .footer {
