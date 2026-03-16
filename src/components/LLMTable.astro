@@ -10,58 +10,23 @@ const { lang } = Astro.props;
 const t = useTranslations(lang);
 
 const llms = [
-  {
-    model: 'Sarvam-105B',
-    org: 'Sarvam AI',
-    params: '105B MoE',
-    languages: '22 Indian + English',
-    notes: 'Govt-backed (IndiaAI Mission), open-source, 128K context',
-  },
-  {
-    model: 'Sarvam-30B',
-    org: 'Sarvam AI',
-    params: '30B MoE',
-    languages: '10+ Indian',
-    notes: 'Lighter model, 32K context, edge-friendly',
-  },
-  {
-    model: 'Krutrim-2',
-    org: 'Ola AI',
-    params: '12B dense',
-    languages: '22 Indian',
-    notes: 'Fast inference, 128K context, Mistral-NeMo arch',
-  },
-  {
-    model: 'Hanooman',
-    org: 'IIT Bombay + Jio',
-    params: '1.5B–40B',
-    languages: '11 Indian',
-    notes: 'Multimodal: text, speech, video generation',
-  },
-  {
-    model: 'Airavata',
-    org: 'AI4Bharat / IIT Madras',
-    params: 'Various',
-    languages: '22 Indian',
-    notes: 'NLP tooling, IndicTrans2 translation',
-  },
-  {
-    model: 'BharatGen',
-    org: 'CDAC + IndiaAI',
-    params: 'Various',
-    languages: '22 Indian',
-    notes: 'Government supercomputing initiative',
-  },
+  { model: 'Sarvam-105B', org: 'Sarvam AI', params: '105B MoE', languages: '22 Indian + EN', notes: 'Govt-backed, open-source, 128K ctx' },
+  { model: 'Sarvam-30B', org: 'Sarvam AI', params: '30B MoE', languages: '10+ Indian', notes: 'Lighter, 32K ctx, edge-friendly' },
+  { model: 'Krutrim-2', org: 'Ola AI', params: '12B dense', languages: '22 Indian', notes: 'Fast inference, 128K ctx' },
+  { model: 'Hanooman', org: 'IIT Bombay + Jio', params: '1.5B–40B', languages: '11 Indian', notes: 'Multimodal: text, speech, video' },
+  { model: 'Airavata', org: 'AI4Bharat', params: 'Various', languages: '22 Indian', notes: 'NLP tooling, IndicTrans2' },
+  { model: 'BharatGen', org: 'CDAC + IndiaAI', params: 'Various', languages: '22 Indian', notes: 'Govt supercomputing initiative' },
 ];
 ---
 
-<section class="llm-section" id="llms">
-  <div class="section-inner">
-    <h2 class="section-title">{t.llms.title}</h2>
-    <p class="section-subtitle">{t.llms.subtitle}</p>
+<section class="llms" id="llms">
+  <div class="llms-inner">
+    <p class="section-label reveal">{t.llms.headers.model}</p>
+    <h2 class="llms-title reveal reveal-delay-1">{t.llms.title}</h2>
+    <p class="llms-subtitle reveal reveal-delay-2">{t.llms.subtitle}</p>
 
-    <div class="table-wrap">
-      <table class="llm-table">
+    <div class="table-container reveal reveal-delay-3">
+      <table>
         <thead>
           <tr>
             <th>{t.llms.headers.model}</th>
@@ -74,122 +39,139 @@ const llms = [
         <tbody>
           {llms.map((row) => (
             <tr>
-              <td class="model-name">{row.model}</td>
+              <td class="td-model">{row.model}</td>
               <td>{row.org}</td>
               <td><code>{row.params}</code></td>
               <td>{row.languages}</td>
-              <td class="notes">{row.notes}</td>
+              <td class="td-notes">{row.notes}</td>
             </tr>
           ))}
         </tbody>
       </table>
     </div>
 
-    <p class="disclaimer">{t.llms.disclaimer}</p>
+    <div class="disclaimer reveal reveal-delay-4">
+      <svg viewBox="0 0 16 16" width="14" height="14" class="disclaimer-icon">
+        <circle cx="8" cy="8" r="7" fill="none" stroke="currentColor" stroke-width="1.5"/>
+        <line x1="8" y1="5" x2="8" y2="9" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+        <circle cx="8" cy="12" r="0.8" fill="currentColor"/>
+      </svg>
+      <span>{t.llms.disclaimer}</span>
+    </div>
   </div>
 </section>
 
 <style>
-  .llm-section {
-    padding: var(--space-xl) var(--space-md);
+  .llms {
+    padding: 6rem var(--gutter);
   }
 
-  .section-inner {
-    max-width: var(--max-width);
+  .llms-inner {
+    max-width: var(--max-w);
     margin: 0 auto;
   }
 
-  .section-title {
-    font-size: 2rem;
-    margin-bottom: var(--space-xs);
+  .llms-title {
+    font-size: clamp(1.5rem, 3vw, 2.25rem);
+    margin-bottom: 0.5rem;
   }
 
-  .section-subtitle {
-    color: var(--color-muted);
-    margin-bottom: var(--space-lg);
-    font-size: 1.1rem;
+  .llms-subtitle {
+    color: var(--color-text-dim);
+    font-size: 1rem;
+    margin-bottom: 3rem;
+    max-width: 36rem;
   }
 
-  .table-wrap {
+  .table-container {
     overflow-x: auto;
     border: 1px solid var(--color-border);
-    border-radius: 8px;
+    border-radius: 12px;
     background: var(--color-surface);
+    -webkit-overflow-scrolling: touch;
   }
 
-  .llm-table {
+  table {
     width: 100%;
     border-collapse: collapse;
-    font-size: 0.95rem;
   }
 
-  .llm-table thead {
-    border-bottom: 2px solid var(--color-border);
+  thead {
+    border-bottom: 1px solid var(--color-border-light);
   }
 
-  .llm-table th {
-    padding: var(--space-sm) var(--space-sm);
+  th {
+    padding: 0.85rem 1.25rem;
     text-align: left;
-    font-weight: 600;
-    color: var(--color-muted);
-    font-size: 0.8rem;
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
-    white-space: nowrap;
-  }
-
-  .llm-table td {
-    padding: var(--space-sm) var(--space-sm);
-    border-bottom: 1px solid var(--color-border);
-    vertical-align: top;
-  }
-
-  .llm-table tbody tr:last-child td {
-    border-bottom: none;
-  }
-
-  .llm-table tbody tr:hover {
-    background: rgba(194, 69, 45, 0.04);
-  }
-
-  .model-name {
     font-family: var(--font-mono), monospace;
     font-weight: 500;
-    color: var(--color-secondary);
+    font-size: 0.7rem;
+    color: var(--color-text-dim);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
     white-space: nowrap;
+    opacity: 0.7;
   }
 
-  .llm-table code {
-    background: rgba(31, 58, 110, 0.08);
-    padding: 0.15rem 0.4rem;
-    border-radius: 3px;
-    font-size: 0.85rem;
-    white-space: nowrap;
-  }
-
-  .notes {
-    color: var(--color-muted);
+  td {
+    padding: 1rem 1.25rem;
+    border-bottom: 1px solid var(--color-border);
     font-size: 0.9rem;
+    vertical-align: top;
+    color: var(--color-text-dim);
+  }
+
+  tbody tr:last-child td { border-bottom: none; }
+
+  tbody tr {
+    transition: background 0.2s ease;
+  }
+
+  tbody tr:hover {
+    background: var(--color-surface-hover);
+  }
+
+  .td-model {
+    font-family: var(--font-mono), monospace;
+    font-weight: 500;
+    color: var(--color-accent);
+    white-space: nowrap;
+  }
+
+  code {
+    background: var(--color-gold-dim);
+    color: var(--color-gold);
+    padding: 0.15rem 0.5rem;
+    border-radius: 4px;
+    font-size: 0.8rem;
+    white-space: nowrap;
+  }
+
+  .td-notes {
+    font-size: 0.85rem;
+    opacity: 0.7;
   }
 
   .disclaimer {
-    margin-top: var(--space-md);
-    padding: var(--space-sm) var(--space-md);
-    background: rgba(31, 58, 110, 0.06);
-    border-left: 3px solid var(--color-secondary);
-    border-radius: 0 6px 6px 0;
-    color: var(--color-muted);
-    font-size: 0.9rem;
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    margin-top: 1.5rem;
+    padding: 0.85rem 1.25rem;
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: 8px;
+    font-size: 0.85rem;
+    color: var(--color-text-dim);
+  }
+
+  .disclaimer-icon {
+    color: var(--color-gold);
+    flex-shrink: 0;
   }
 
   @media (max-width: 768px) {
-    .llm-table {
-      font-size: 0.85rem;
-    }
-
-    .llm-table th,
-    .llm-table td {
-      padding: 0.75rem 0.5rem;
-    }
+    td, th { padding: 0.75rem 0.75rem; }
+    td { font-size: 0.82rem; }
   }
 </style>
