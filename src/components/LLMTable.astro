@@ -1,0 +1,195 @@
+---
+import type { Lang } from '../i18n/translations';
+import { useTranslations } from '../i18n/utils';
+
+interface Props {
+  lang: Lang;
+}
+
+const { lang } = Astro.props;
+const t = useTranslations(lang);
+
+const llms = [
+  {
+    model: 'Sarvam-105B',
+    org: 'Sarvam AI',
+    params: '105B MoE',
+    languages: '22 Indian + English',
+    notes: 'Govt-backed (IndiaAI Mission), open-source, 128K context',
+  },
+  {
+    model: 'Sarvam-30B',
+    org: 'Sarvam AI',
+    params: '30B MoE',
+    languages: '10+ Indian',
+    notes: 'Lighter model, 32K context, edge-friendly',
+  },
+  {
+    model: 'Krutrim-2',
+    org: 'Ola AI',
+    params: '12B dense',
+    languages: '22 Indian',
+    notes: 'Fast inference, 128K context, Mistral-NeMo arch',
+  },
+  {
+    model: 'Hanooman',
+    org: 'IIT Bombay + Jio',
+    params: '1.5B–40B',
+    languages: '11 Indian',
+    notes: 'Multimodal: text, speech, video generation',
+  },
+  {
+    model: 'Airavata',
+    org: 'AI4Bharat / IIT Madras',
+    params: 'Various',
+    languages: '22 Indian',
+    notes: 'NLP tooling, IndicTrans2 translation',
+  },
+  {
+    model: 'BharatGen',
+    org: 'CDAC + IndiaAI',
+    params: 'Various',
+    languages: '22 Indian',
+    notes: 'Government supercomputing initiative',
+  },
+];
+---
+
+<section class="llm-section" id="llms">
+  <div class="section-inner">
+    <h2 class="section-title">{t.llms.title}</h2>
+    <p class="section-subtitle">{t.llms.subtitle}</p>
+
+    <div class="table-wrap">
+      <table class="llm-table">
+        <thead>
+          <tr>
+            <th>{t.llms.headers.model}</th>
+            <th>{t.llms.headers.org}</th>
+            <th>{t.llms.headers.params}</th>
+            <th>{t.llms.headers.languages}</th>
+            <th>{t.llms.headers.notes}</th>
+          </tr>
+        </thead>
+        <tbody>
+          {llms.map((row) => (
+            <tr>
+              <td class="model-name">{row.model}</td>
+              <td>{row.org}</td>
+              <td><code>{row.params}</code></td>
+              <td>{row.languages}</td>
+              <td class="notes">{row.notes}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+
+    <p class="disclaimer">{t.llms.disclaimer}</p>
+  </div>
+</section>
+
+<style>
+  .llm-section {
+    padding: var(--space-xl) var(--space-md);
+  }
+
+  .section-inner {
+    max-width: var(--max-width);
+    margin: 0 auto;
+  }
+
+  .section-title {
+    font-size: 2rem;
+    margin-bottom: var(--space-xs);
+  }
+
+  .section-subtitle {
+    color: var(--color-muted);
+    margin-bottom: var(--space-lg);
+    font-size: 1.1rem;
+  }
+
+  .table-wrap {
+    overflow-x: auto;
+    border: 1px solid var(--color-border);
+    border-radius: 8px;
+    background: var(--color-surface);
+  }
+
+  .llm-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.95rem;
+  }
+
+  .llm-table thead {
+    border-bottom: 2px solid var(--color-border);
+  }
+
+  .llm-table th {
+    padding: var(--space-sm) var(--space-sm);
+    text-align: left;
+    font-weight: 600;
+    color: var(--color-muted);
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    white-space: nowrap;
+  }
+
+  .llm-table td {
+    padding: var(--space-sm) var(--space-sm);
+    border-bottom: 1px solid var(--color-border);
+    vertical-align: top;
+  }
+
+  .llm-table tbody tr:last-child td {
+    border-bottom: none;
+  }
+
+  .llm-table tbody tr:hover {
+    background: rgba(194, 69, 45, 0.04);
+  }
+
+  .model-name {
+    font-family: var(--font-mono), monospace;
+    font-weight: 500;
+    color: var(--color-secondary);
+    white-space: nowrap;
+  }
+
+  .llm-table code {
+    background: rgba(31, 58, 110, 0.08);
+    padding: 0.15rem 0.4rem;
+    border-radius: 3px;
+    font-size: 0.85rem;
+    white-space: nowrap;
+  }
+
+  .notes {
+    color: var(--color-muted);
+    font-size: 0.9rem;
+  }
+
+  .disclaimer {
+    margin-top: var(--space-md);
+    padding: var(--space-sm) var(--space-md);
+    background: rgba(31, 58, 110, 0.06);
+    border-left: 3px solid var(--color-secondary);
+    border-radius: 0 6px 6px 0;
+    color: var(--color-muted);
+    font-size: 0.9rem;
+  }
+
+  @media (max-width: 768px) {
+    .llm-table {
+      font-size: 0.85rem;
+    }
+
+    .llm-table th,
+    .llm-table td {
+      padding: 0.75rem 0.5rem;
+    }
+  }
+</style>

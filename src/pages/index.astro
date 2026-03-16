@@ -1,0 +1,256 @@
+---
+import Layout from '../layouts/Layout.astro';
+import LLMTable from '../components/LLMTable.astro';
+import SignupForm from '../components/SignupForm.astro';
+import { getLangFromUrl, useTranslations } from '../i18n/utils';
+
+const lang = getLangFromUrl(Astro.url);
+const t = useTranslations(lang);
+---
+
+<Layout>
+  <!-- Hero Section -->
+  <section class="hero">
+    <div class="hero-inner">
+      <div class="hero-badge">{t.hero.badge}</div>
+
+      <h1 class="hero-title">
+        {t.hero.title}
+        <span class="hero-highlight">{t.hero.titleHighlight}</span>
+      </h1>
+
+      <p class="hero-subtitle">{t.hero.subtitle}</p>
+      <p class="hero-description">{t.hero.description}</p>
+
+      <div class="hero-actions">
+        <a href="#early-access" class="btn btn-primary">{t.cta.button} &rarr;</a>
+        <a href="#llms" class="btn btn-secondary">{t.llms.title}</a>
+      </div>
+
+      <!-- Harappan seal-inspired decorative element -->
+      <div class="hero-seal" aria-hidden="true">
+        <svg viewBox="0 0 200 200" class="seal-svg">
+          <!-- Outer square (seal border) -->
+          <rect x="10" y="10" width="180" height="180" rx="4" fill="none" stroke="currentColor" stroke-width="2" opacity="0.15"/>
+          <!-- Inner grid (city plan) -->
+          <line x1="70" y1="10" x2="70" y2="190" stroke="currentColor" stroke-width="1" opacity="0.08"/>
+          <line x1="130" y1="10" x2="130" y2="190" stroke="currentColor" stroke-width="1" opacity="0.08"/>
+          <line x1="10" y1="70" x2="190" y2="70" stroke="currentColor" stroke-width="1" opacity="0.08"/>
+          <line x1="10" y1="130" x2="190" y2="130" stroke="currentColor" stroke-width="1" opacity="0.08"/>
+          <!-- Center motif (abstracted weight/node) -->
+          <rect x="85" y="85" width="30" height="30" rx="2" fill="currentColor" opacity="0.1"/>
+          <rect x="90" y="90" width="20" height="20" rx="1" fill="currentColor" opacity="0.08"/>
+        </svg>
+      </div>
+    </div>
+  </section>
+
+  <!-- About Section -->
+  <section class="about" id="about">
+    <div class="about-inner">
+      <h2 class="section-title">{t.about.title}</h2>
+      <p class="about-description">{t.about.description}</p>
+
+      <div class="features-grid">
+        {t.about.features.map((feature: string) => (
+          <div class="feature-card">
+            <div class="feature-marker" aria-hidden="true">
+              <svg viewBox="0 0 16 16" width="16" height="16">
+                <rect x="2" y="2" width="12" height="12" rx="2" fill="currentColor"/>
+              </svg>
+            </div>
+            <p>{feature}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- LLM Table Section -->
+  <LLMTable lang={lang} />
+
+  <!-- Signup Form Section -->
+  <SignupForm lang={lang} />
+</Layout>
+
+<style>
+  /* Hero */
+  .hero {
+    padding: var(--space-xl) var(--space-md);
+    padding-top: calc(var(--space-xl) + 2rem);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hero-inner {
+    max-width: var(--max-width);
+    margin: 0 auto;
+    position: relative;
+  }
+
+  .hero-badge {
+    display: inline-block;
+    padding: 0.35rem 1rem;
+    background: rgba(194, 69, 45, 0.1);
+    color: var(--color-accent);
+    border: 1px solid rgba(194, 69, 45, 0.2);
+    border-radius: 100px;
+    font-family: var(--font-mono), monospace;
+    font-size: 0.85rem;
+    font-weight: 500;
+    margin-bottom: var(--space-md);
+    letter-spacing: 0.02em;
+  }
+
+  .hero-title {
+    font-size: clamp(2.5rem, 6vw, 4.5rem);
+    font-weight: 700;
+    line-height: 1.1;
+    margin-bottom: var(--space-sm);
+    max-width: 48rem;
+  }
+
+  .hero-highlight {
+    display: block;
+    color: var(--color-accent);
+  }
+
+  .hero-subtitle {
+    font-family: var(--font-mono), monospace;
+    color: var(--color-secondary);
+    font-size: 1.1rem;
+    margin-bottom: var(--space-sm);
+  }
+
+  .hero-description {
+    color: var(--color-muted);
+    font-size: 1.15rem;
+    max-width: 40rem;
+    margin-bottom: var(--space-md);
+    line-height: 1.7;
+  }
+
+  .hero-actions {
+    display: flex;
+    gap: var(--space-sm);
+    flex-wrap: wrap;
+  }
+
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.75rem 1.5rem;
+    border-radius: 6px;
+    font-family: var(--font-heading), system-ui, sans-serif;
+    font-weight: 600;
+    font-size: 1rem;
+    transition: all 0.2s;
+  }
+
+  .btn-primary {
+    background: var(--color-accent);
+    color: var(--color-bg);
+  }
+
+  .btn-primary:hover {
+    background: var(--color-accent-dark);
+    color: var(--color-bg);
+  }
+
+  .btn-secondary {
+    background: transparent;
+    color: var(--color-secondary);
+    border: 1px solid var(--color-border);
+  }
+
+  .btn-secondary:hover {
+    border-color: var(--color-secondary);
+    background: rgba(31, 58, 110, 0.05);
+    color: var(--color-secondary);
+  }
+
+  .hero-seal {
+    position: absolute;
+    right: -2rem;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 20rem;
+    height: 20rem;
+    color: var(--color-accent);
+    pointer-events: none;
+  }
+
+  .seal-svg {
+    width: 100%;
+    height: 100%;
+  }
+
+  /* About */
+  .about {
+    padding: var(--space-xl) var(--space-md);
+  }
+
+  .about-inner {
+    max-width: var(--max-width);
+    margin: 0 auto;
+  }
+
+  .section-title {
+    font-size: 2rem;
+    margin-bottom: var(--space-sm);
+  }
+
+  .about-description {
+    color: var(--color-muted);
+    font-size: 1.1rem;
+    max-width: 48rem;
+    margin-bottom: var(--space-lg);
+    line-height: 1.7;
+  }
+
+  .features-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: var(--space-sm);
+  }
+
+  .feature-card {
+    display: flex;
+    gap: var(--space-sm);
+    padding: var(--space-sm) var(--space-md);
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: 8px;
+    transition: border-color 0.2s;
+  }
+
+  .feature-card:hover {
+    border-color: var(--color-accent);
+  }
+
+  .feature-marker {
+    color: var(--color-accent);
+    flex-shrink: 0;
+    margin-top: 0.2rem;
+  }
+
+  .feature-card p {
+    font-size: 0.95rem;
+    line-height: 1.5;
+  }
+
+  @media (max-width: 768px) {
+    .hero {
+      padding-top: var(--space-lg);
+    }
+
+    .hero-seal {
+      display: none;
+    }
+
+    .features-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

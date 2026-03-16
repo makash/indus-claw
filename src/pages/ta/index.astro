@@ -1,0 +1,72 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import LLMTable from '../../components/LLMTable.astro';
+import SignupForm from '../../components/SignupForm.astro';
+import { getLangFromUrl, useTranslations } from '../../i18n/utils';
+
+const lang = getLangFromUrl(Astro.url);
+const t = useTranslations(lang);
+---
+
+<Layout>
+  <section class="hero">
+    <div class="hero-inner">
+      <div class="hero-badge">{t.hero.badge}</div>
+      <h1 class="hero-title">
+        {t.hero.title}
+        <span class="hero-highlight">{t.hero.titleHighlight}</span>
+      </h1>
+      <p class="hero-subtitle">{t.hero.subtitle}</p>
+      <p class="hero-description">{t.hero.description}</p>
+      <div class="hero-actions">
+        <a href="#early-access" class="btn btn-primary">{t.cta.button} &rarr;</a>
+        <a href="#llms" class="btn btn-secondary">{t.llms.title}</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="about" id="about">
+    <div class="about-inner">
+      <h2 class="section-title">{t.about.title}</h2>
+      <p class="about-description">{t.about.description}</p>
+      <div class="features-grid">
+        {t.about.features.map((feature: string) => (
+          <div class="feature-card">
+            <div class="feature-marker" aria-hidden="true">
+              <svg viewBox="0 0 16 16" width="16" height="16"><rect x="2" y="2" width="12" height="12" rx="2" fill="currentColor"/></svg>
+            </div>
+            <p>{feature}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <LLMTable lang={lang} />
+  <SignupForm lang={lang} />
+</Layout>
+
+<style>
+  .hero { padding: var(--space-xl) var(--space-md); padding-top: calc(var(--space-xl) + 2rem); }
+  .hero-inner { max-width: var(--max-width); margin: 0 auto; }
+  .hero-badge { display: inline-block; padding: 0.35rem 1rem; background: rgba(194,69,45,0.1); color: var(--color-accent); border: 1px solid rgba(194,69,45,0.2); border-radius: 100px; font-family: var(--font-mono), monospace; font-size: 0.85rem; font-weight: 500; margin-bottom: var(--space-md); }
+  .hero-title { font-size: clamp(2.5rem, 6vw, 4.5rem); font-weight: 700; line-height: 1.1; margin-bottom: var(--space-sm); max-width: 48rem; }
+  .hero-highlight { display: block; color: var(--color-accent); }
+  .hero-subtitle { font-family: var(--font-mono), monospace; color: var(--color-secondary); font-size: 1.1rem; margin-bottom: var(--space-sm); }
+  .hero-description { color: var(--color-muted); font-size: 1.15rem; max-width: 40rem; margin-bottom: var(--space-md); line-height: 1.7; }
+  .hero-actions { display: flex; gap: var(--space-sm); flex-wrap: wrap; }
+  .btn { display: inline-flex; align-items: center; gap: 0.5rem; padding: 0.75rem 1.5rem; border-radius: 6px; font-family: var(--font-heading), system-ui, sans-serif; font-weight: 600; font-size: 1rem; transition: all 0.2s; }
+  .btn-primary { background: var(--color-accent); color: var(--color-bg); }
+  .btn-primary:hover { background: var(--color-accent-dark); color: var(--color-bg); }
+  .btn-secondary { background: transparent; color: var(--color-secondary); border: 1px solid var(--color-border); }
+  .btn-secondary:hover { border-color: var(--color-secondary); background: rgba(31,58,110,0.05); color: var(--color-secondary); }
+  .about { padding: var(--space-xl) var(--space-md); }
+  .about-inner { max-width: var(--max-width); margin: 0 auto; }
+  .section-title { font-size: 2rem; margin-bottom: var(--space-sm); }
+  .about-description { color: var(--color-muted); font-size: 1.1rem; max-width: 48rem; margin-bottom: var(--space-lg); line-height: 1.7; }
+  .features-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: var(--space-sm); }
+  .feature-card { display: flex; gap: var(--space-sm); padding: var(--space-sm) var(--space-md); background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 8px; transition: border-color 0.2s; }
+  .feature-card:hover { border-color: var(--color-accent); }
+  .feature-marker { color: var(--color-accent); flex-shrink: 0; margin-top: 0.2rem; }
+  .feature-card p { font-size: 0.95rem; line-height: 1.5; }
+</style>

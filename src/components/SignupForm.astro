@@ -1,0 +1,247 @@
+---
+import type { Lang } from '../i18n/translations';
+import { useTranslations } from '../i18n/utils';
+
+interface Props {
+  lang: Lang;
+}
+
+const { lang } = Astro.props;
+const t = useTranslations(lang);
+---
+
+<section class="cta-section" id="early-access">
+  <div class="section-inner">
+    <div class="cta-card">
+      <div class="cta-decoration">
+        <!-- Stepped battlement pattern (Harappan crenellation) -->
+        <svg class="battlement" viewBox="0 0 240 20" preserveAspectRatio="none">
+          <path d="M0 20 L0 12 L10 12 L10 6 L20 6 L20 0 L30 0 L30 6 L40 6 L40 12 L50 12 L50 20 L60 20 L60 12 L70 12 L70 6 L80 6 L80 0 L90 0 L90 6 L100 6 L100 12 L110 12 L110 20 L120 20 L120 12 L130 12 L130 6 L140 6 L140 0 L150 0 L150 6 L160 6 L160 12 L170 12 L170 20 L180 20 L180 12 L190 12 L190 6 L200 6 L200 0 L210 0 L210 6 L220 6 L220 12 L230 12 L230 20 L240 20" fill="none" stroke="currentColor" stroke-width="1.5"/>
+        </svg>
+      </div>
+
+      <h2 class="cta-title">{t.cta.title}</h2>
+      <p class="cta-subtitle">{t.cta.subtitle}</p>
+
+      <form class="signup-form" id="signup-form">
+        <div class="form-row">
+          <input
+            type="email"
+            name="email"
+            required
+            placeholder={t.cta.placeholder}
+            class="form-input"
+            autocomplete="email"
+          />
+          <!-- Honeypot -->
+          <input type="text" name="hp_field" style="display:none" tabindex="-1" autocomplete="off" />
+          <button type="submit" class="form-button">
+            <span class="btn-text">{t.cta.button}</span>
+            <span class="btn-arrow">&rarr;</span>
+          </button>
+        </div>
+        <p class="form-privacy">{t.cta.privacy}</p>
+      </form>
+
+      <div class="form-success" id="form-success" hidden>
+        <div class="success-icon">
+          <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M20 6L9 17l-5-5"/>
+          </svg>
+        </div>
+        <p>{t.cta.success}</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+  const form = document.getElementById('signup-form') as HTMLFormElement | null;
+  const success = document.getElementById('form-success');
+
+  form?.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const data = new FormData(form);
+
+    // Honeypot check
+    if (data.get('hp_field')) return;
+
+    const email = data.get('email') as string;
+    if (!email) return;
+
+    const button = form.querySelector('.form-button') as HTMLButtonElement;
+    const btnText = button.querySelector('.btn-text') as HTMLSpanElement;
+    const originalText = btnText.textContent;
+    btnText.textContent = '...';
+    button.disabled = true;
+
+    try {
+      const locale = document.documentElement.lang || 'en';
+
+      const res = await fetch('/api/signup', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          email,
+          source: window.location.pathname,
+          locale,
+          hp: data.get('hp_field') || '',
+        }),
+      });
+
+      if (!res.ok) {
+        const err = await res.json();
+        throw new Error(err.error || 'Request failed');
+      }
+
+      form.hidden = true;
+      if (success) success.hidden = false;
+    } catch {
+      btnText.textContent = originalText;
+      button.disabled = false;
+    }
+  });
+</script>
+
+<style>
+  .cta-section {
+    padding: var(--space-xl) var(--space-md);
+  }
+
+  .section-inner {
+    max-width: 40rem;
+    margin: 0 auto;
+  }
+
+  .cta-card {
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: 12px;
+    padding: var(--space-lg) var(--space-md);
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .cta-decoration {
+    color: var(--color-border);
+    margin-bottom: var(--space-md);
+  }
+
+  .battlement {
+    width: 100%;
+    height: 20px;
+  }
+
+  .cta-title {
+    font-size: 1.75rem;
+    margin-bottom: var(--space-xs);
+  }
+
+  .cta-subtitle {
+    color: var(--color-muted);
+    margin-bottom: var(--space-md);
+    font-size: 1.05rem;
+  }
+
+  .signup-form {
+    max-width: 28rem;
+    margin: 0 auto;
+  }
+
+  .form-row {
+    display: flex;
+    gap: 0.5rem;
+  }
+
+  .form-input {
+    flex: 1;
+    padding: 0.75rem 1rem;
+    border: 1px solid var(--color-border);
+    border-radius: 6px;
+    background: var(--color-bg);
+    color: var(--color-text);
+    font-family: inherit;
+    font-size: 1rem;
+    outline: none;
+    transition: border-color 0.2s;
+  }
+
+  .form-input:focus {
+    border-color: var(--color-accent);
+  }
+
+  .form-input::placeholder {
+    color: var(--color-muted);
+  }
+
+  .form-button {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.75rem 1.5rem;
+    background: var(--color-accent);
+    color: var(--color-bg);
+    border: none;
+    border-radius: 6px;
+    font-family: var(--font-heading), system-ui, sans-serif;
+    font-weight: 600;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background 0.2s;
+    white-space: nowrap;
+  }
+
+  .form-button:hover {
+    background: var(--color-accent-dark);
+  }
+
+  .form-button:disabled {
+    opacity: 0.7;
+    cursor: not-allowed;
+  }
+
+  .form-privacy {
+    margin-top: var(--space-xs);
+    color: var(--color-muted);
+    font-size: 0.8rem;
+  }
+
+  .form-success {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--space-sm);
+  }
+
+  .success-icon {
+    color: #4E7C5B;
+    width: 3rem;
+    height: 3rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(78, 124, 91, 0.1);
+    border-radius: 50%;
+  }
+
+  .success-icon svg {
+    width: 1.5rem;
+    height: 1.5rem;
+  }
+
+  .form-success p {
+    font-size: 1.1rem;
+    font-weight: 500;
+  }
+
+  @media (max-width: 480px) {
+    .form-row {
+      flex-direction: column;
+    }
+
+    .form-button {
+      justify-content: center;
+    }
+  }
+</style>

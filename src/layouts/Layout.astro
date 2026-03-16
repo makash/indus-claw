@@ -1,0 +1,310 @@
+---
+import { Font } from 'astro:assets';
+import { getRelativeLocaleUrl } from 'astro:i18n';
+import { languages, type Lang } from '../i18n/translations';
+import { getLangFromUrl, useTranslations } from '../i18n/utils';
+
+interface Props {
+  title?: string;
+  description?: string;
+}
+
+const lang = getLangFromUrl(Astro.url) as Lang;
+const t = useTranslations(lang);
+const { title = `IndusClaw — ${t.hero.titleHighlight}`, description = t.hero.description } = Astro.props;
+
+const fontVarMap: Partial<Record<Lang, string>> = {
+  hi: '--font-devanagari',
+  ta: '--font-tamil',
+  te: '--font-telugu',
+  bn: '--font-bengali',
+  kn: '--font-kannada',
+  ml: '--font-malayalam',
+  mr: '--font-devanagari',
+  gu: '--font-gujarati',
+  pa: '--font-gurmukhi',
+  or: '--font-oriya',
+};
+---
+
+<!doctype html>
+<html lang={lang}>
+  <head>
+    <meta charset="utf-8" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content={description} />
+    <meta name="generator" content={Astro.generator} />
+
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content={Astro.url.href} />
+
+    <title>{title}</title>
+
+    <Font cssVariable="--font-heading" preload />
+    <Font cssVariable="--font-sans" preload />
+    <Font cssVariable="--font-mono" preload />
+    {lang !== 'en' && fontVarMap[lang] && <Font cssVariable={fontVarMap[lang]!} preload />}
+  </head>
+  <body>
+    <nav class="nav">
+      <div class="nav-inner">
+        <a href={getRelativeLocaleUrl(lang, '/')} class="nav-logo">
+          <span class="seal-frame">IC</span>
+          <span>{t.nav.title}</span>
+        </a>
+        <div class="nav-links">
+          <div class="lang-switcher">
+            <span class="lang-label">{t.nav.langLabel}</span>
+            <div class="lang-options">
+              {Object.entries(languages).map(([code, name]) => (
+                <a
+                  href={getRelativeLocaleUrl(code, '/')}
+                  class:list={['lang-option', { active: code === lang }]}
+                >
+                  {name}
+                </a>
+              ))}
+            </div>
+          </div>
+        </div>
+      </div>
+    </nav>
+
+    <main>
+      <slot />
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        <div class="footer-brand">
+          <span class="seal-frame seal-frame--small">IC</span>
+          <span class="footer-tagline">{t.footer.tagline}</span>
+        </div>
+        <p class="footer-note">{t.footer.fork} &middot; {t.footer.built} Astro</p>
+      </div>
+    </footer>
+  </body>
+</html>
+
+<style is:global>
+  :root {
+    --color-bg: #F5E6CC;
+    --color-surface: #FAF5EE;
+    --color-text: #2C2C2C;
+    --color-accent: #C2452D;
+    --color-accent-dark: #A0522D;
+    --color-secondary: #1F3A6E;
+    --color-muted: #708090;
+    --color-border: #D4C4A8;
+    --max-width: 64rem;
+    --space-xs: 0.5rem;
+    --space-sm: 1rem;
+    --space-md: 2rem;
+    --space-lg: 4rem;
+    --space-xl: 6rem;
+  }
+
+  *, *::before, *::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    font-family: var(--font-sans), system-ui, sans-serif;
+    background-color: var(--color-bg);
+    color: var(--color-text);
+    line-height: 1.6;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    /* Subtle grid-city background pattern */
+    background-image:
+      linear-gradient(rgba(194, 69, 45, 0.04) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(194, 69, 45, 0.04) 1px, transparent 1px);
+    background-size: 60px 60px;
+  }
+
+  :lang(hi), :lang(mr) { font-family: var(--font-devanagari), var(--font-sans), system-ui, sans-serif; }
+  :lang(ta) { font-family: var(--font-tamil), var(--font-sans), system-ui, sans-serif; }
+  :lang(te) { font-family: var(--font-telugu), var(--font-sans), system-ui, sans-serif; }
+  :lang(bn) { font-family: var(--font-bengali), var(--font-sans), system-ui, sans-serif; }
+  :lang(kn) { font-family: var(--font-kannada), var(--font-sans), system-ui, sans-serif; }
+  :lang(ml) { font-family: var(--font-malayalam), var(--font-sans), system-ui, sans-serif; }
+  :lang(gu) { font-family: var(--font-gujarati), var(--font-sans), system-ui, sans-serif; }
+  :lang(pa) { font-family: var(--font-gurmukhi), var(--font-sans), system-ui, sans-serif; }
+  :lang(or) { font-family: var(--font-oriya), var(--font-sans), system-ui, sans-serif; }
+
+  h1, h2, h3, h4 {
+    font-family: var(--font-heading), var(--font-sans), system-ui, sans-serif;
+    line-height: 1.2;
+  }
+
+  code, pre {
+    font-family: var(--font-mono), monospace;
+  }
+
+  a {
+    color: var(--color-accent);
+    text-decoration: none;
+    transition: color 0.2s;
+  }
+
+  a:hover {
+    color: var(--color-accent-dark);
+  }
+
+  main {
+    flex: 1;
+  }
+</style>
+
+<style>
+  .nav {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: rgba(245, 230, 204, 0.9);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  .nav-inner {
+    max-width: var(--max-width);
+    margin: 0 auto;
+    padding: var(--space-sm) var(--space-md);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .nav-logo {
+    display: flex;
+    align-items: center;
+    gap: var(--space-xs);
+    font-family: var(--font-heading), system-ui, sans-serif;
+    font-weight: 700;
+    font-size: 1.25rem;
+    color: var(--color-text);
+  }
+
+  .nav-logo:hover {
+    color: var(--color-text);
+  }
+
+  .seal-frame {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 2.25rem;
+    height: 2.25rem;
+    background: var(--color-accent);
+    color: var(--color-bg);
+    font-family: var(--font-mono), monospace;
+    font-weight: 700;
+    font-size: 0.85rem;
+    border-radius: 4px;
+    border: 2px solid var(--color-accent-dark);
+  }
+
+  .seal-frame--small {
+    width: 1.75rem;
+    height: 1.75rem;
+    font-size: 0.7rem;
+  }
+
+  .nav-links {
+    display: flex;
+    align-items: center;
+    gap: var(--space-md);
+  }
+
+  .lang-switcher {
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: var(--space-xs);
+  }
+
+  .lang-label {
+    font-size: 0.85rem;
+    color: var(--color-muted);
+  }
+
+  .lang-options {
+    display: flex;
+    gap: 2px;
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: 6px;
+    padding: 2px;
+  }
+
+  .lang-option {
+    padding: 0.25rem 0.5rem;
+    font-size: 0.8rem;
+    border-radius: 4px;
+    color: var(--color-muted);
+    transition: all 0.2s;
+  }
+
+  .lang-option:hover {
+    color: var(--color-text);
+    background: var(--color-bg);
+  }
+
+  .lang-option.active {
+    color: var(--color-accent);
+    background: var(--color-bg);
+    font-weight: 500;
+  }
+
+  .footer {
+    border-top: 1px solid var(--color-border);
+    padding: var(--space-lg) var(--space-md);
+    margin-top: var(--space-xl);
+  }
+
+  .footer-inner {
+    max-width: var(--max-width);
+    margin: 0 auto;
+    text-align: center;
+  }
+
+  .footer-brand {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--space-xs);
+    margin-bottom: var(--space-sm);
+  }
+
+  .footer-tagline {
+    font-family: var(--font-heading), system-ui, sans-serif;
+    font-weight: 600;
+    font-size: 1rem;
+  }
+
+  .footer-note {
+    color: var(--color-muted);
+    font-size: 0.85rem;
+  }
+
+  @media (max-width: 640px) {
+    .lang-label {
+      display: none;
+    }
+
+    .lang-option {
+      padding: 0.2rem 0.35rem;
+      font-size: 0.7rem;
+    }
+  }
+</style>
